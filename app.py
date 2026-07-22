@@ -1,99 +1,81 @@
 import streamlit as st
 
-from core.database import initialize, add_boat, get_boats
-from core.models import Boat
-from core.scoring import calculate_score
 from core.config import APP_NAME
+from core.database import initialize
 
 initialize()
 
 st.set_page_config(
     page_title=APP_NAME,
     page_icon="🚤",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
-st.sidebar.title("🚤 Boat Hunter")
+st.markdown(
+    """
+    <style>
+    :root {
+        color-scheme: dark;
+    }
+    .stApp {
+        background: linear-gradient(135deg, #07111f 0%, #0f172a 100%);
+        color: #f8fafc;
+    }
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+    .sidebar .sidebar-content {
+        background: #020617;
+    }
+    .boat-card {
+        background: rgba(15, 23, 42, 0.95);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 16px;
+        padding: 1rem;
+        box-shadow: 0 12px 30px rgba(2, 6, 23, 0.35);
+        margin-bottom: 1rem;
+    }
+    .metric-card {
+        background: rgba(15, 23, 42, 0.95);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 16px;
+        padding: 1rem;
+        height: 100%;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.sidebar.image(
+    "https://raw.githubusercontent.com/streamlit/brand/main/logos/mark/streamlit-mark-color.png",
+    width=80,
+)
+st.sidebar.title(APP_NAME)
+st.sidebar.caption("Used cabin cruiser intelligence")
 
 page = st.sidebar.radio(
     "Navigation",
-    [
-        "Dashboard",
-        "Add Boat"
-    ]
+    ["Dashboard", "Inventory", "Analytics", "Settings"],
+    index=0,
+    label_visibility="visible",
 )
 
-# ---------------- Dashboard ----------------
-
 if page == "Dashboard":
+    from pages.dashboard import render_dashboard
 
-    st.title(APP_NAME)
+    render_dashboard()
+elif page == "Inventory":
+    from pages.search import render_search_page
 
-    boats = get_boats()
+    render_search_page()
+elif page == "Analytics":
+    from pages.analytics import render_analytics_page
 
-    st.metric("Saved Boats", len(boats))
+    render_analytics_page()
+else:
+    from pages.settings import render_settings_page
 
-    st.divider()
-
-    if len(boats)==0:
-
-        st.info("No boats saved.")
-
-    else:
-
-        for boat in boats:
-
-            with st.container(border=True):
-
-                st.subheader(boat[1])
-
-                c1,c2,c3=st.columns(3)
-
-                c1.metric("Price",f"${boat[2]:,}")
-
-                c2.metric("Score",boat[7])
-
-                c3.write(boat[3])
-
-                st.write(f"Engine: {boat[4]}")
-                st.write(f"Length: {boat[5]}'")
-
-# ---------------- Add Boat ----------------
-
-if page=="Add Boat":
-
-    st.title("Add Boat")
-
-    name=st.text_input("Boat")
-
-    price=st.number_input("Price",step=500)
-
-    location=st.text_input("Location")
-
-    engine=st.text_input("Engine")
-
-    length=st.slider("Length",20.0,35.0,24.0)
-
-    trailer=st.checkbox("Trailer Included",True)
-
-    notes=st.text_area("Notes")
-
-    if st.button("Save Boat"):
-
-        boat=Boat(
-            name=name,
-            price=price,
-            location=location,
-            engine=engine,
-            length=length,
-            trailer=trailer,
-            notes=notes
-        )
-
-        boat.score=calculate_score(boat)
-
-        add_boat(boat)
-
-        st.success("Boat Saved!")
-
-        st.rerun()
+    render_settings_page()
