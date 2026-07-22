@@ -1,0 +1,3 @@
+# BoatHunterAI
+
+Starter scaffold.
