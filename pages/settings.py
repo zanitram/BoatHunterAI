@@ -12,3 +12,11 @@ def render_settings_page():
         st.text_input("Default search location", value="Toronto")
         if dark_mode and show_scores:
             st.success("Your preferred dashboard layout is active.")
+
+
+def main():
+    render_settings_page()
+
+
+if __name__ == "__main__":
+    main()

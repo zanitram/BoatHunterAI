@@ -19,30 +19,52 @@ st.markdown(
         color-scheme: dark;
     }
     .stApp {
-        background: linear-gradient(135deg, #07111f 0%, #0f172a 100%);
+        background:
+            radial-gradient(circle at top left, rgba(34, 211, 238, 0.16), transparent 26%),
+            linear-gradient(135deg, #020617 0%, #0f172a 45%, #111827 100%);
         color: #f8fafc;
+        font-family: "Inter", "Segoe UI", sans-serif;
     }
     .block-container {
         padding-top: 2rem;
         padding-bottom: 3rem;
     }
-    .sidebar .sidebar-content {
-        background: #020617;
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+        border-right: 1px solid rgba(148, 163, 184, 0.16);
+    }
+    [data-testid="stSidebarNavItems"] button {
+        border-radius: 12px;
+        margin: 0.2rem 0;
+        padding: 0.6rem 0.8rem;
+    }
+    [data-testid="stSidebarNavItems"] button[aria-pressed="true"] {
+        background: rgba(34, 211, 238, 0.16);
+        color: #f8fafc;
     }
     .boat-card {
-        background: rgba(15, 23, 42, 0.95);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 16px;
-        padding: 1rem;
-        box-shadow: 0 12px 30px rgba(2, 6, 23, 0.35);
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.96));
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 20px;
+        padding: 1.1rem 1.2rem;
+        box-shadow: 0 18px 40px rgba(2, 6, 23, 0.35);
         margin-bottom: 1rem;
+        backdrop-filter: blur(10px);
     }
     .metric-card {
-        background: rgba(15, 23, 42, 0.95);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 16px;
-        padding: 1rem;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 18px;
+        padding: 1rem 1rem 1.1rem;
         height: 100%;
+        box-shadow: 0 10px 24px rgba(2, 6, 23, 0.25);
+    }
+    .section-shell {
+        background: rgba(15, 23, 42, 0.55);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        border-radius: 22px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
     }
     </style>
     """,
@@ -54,28 +76,15 @@ st.sidebar.image(
     width=80,
 )
 st.sidebar.title(APP_NAME)
-st.sidebar.caption("Used cabin cruiser intelligence")
+st.sidebar.caption("Premium used cabin cruiser intelligence")
 
-page = st.sidebar.radio(
-    "Navigation",
-    ["Dashboard", "Inventory", "Analytics", "Settings"],
-    index=0,
-    label_visibility="visible",
-)
+pages = [
+    st.Page("pages/dashboard.py", title="Dashboard", icon="🚤"),
+    st.Page("pages/search.py", title="Inventory", icon="🧭"),
+    st.Page("pages/hunt.py", title="Hunt", icon="🔎"),
+    st.Page("pages/analytics.py", title="Analytics", icon="📈"),
+    st.Page("pages/settings.py", title="Settings", icon="⚙️"),
+]
 
-if page == "Dashboard":
-    from pages.dashboard import render_dashboard
-
-    render_dashboard()
-elif page == "Inventory":
-    from pages.search import render_search_page
-
-    render_search_page()
-elif page == "Analytics":
-    from pages.analytics import render_analytics_page
-
-    render_analytics_page()
-else:
-    from pages.settings import render_settings_page
-
-    render_settings_page()
+page = st.navigation(pages)
+page.run()

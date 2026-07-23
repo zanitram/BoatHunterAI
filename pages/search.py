@@ -7,8 +7,10 @@ from core.scoring import calculate_score
 
 
 def render_search_page():
+    st.markdown("<div class='section-shell'>", unsafe_allow_html=True)
     st.title("🧭 Inventory")
     st.caption("Add, edit, and manage your boat listings with full SQLite CRUD support.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if "editing_boat_id" not in st.session_state:
         st.session_state.editing_boat_id = None
@@ -94,3 +96,11 @@ def render_search_page():
                 st.rerun(),
             ),
         )
+
+
+def main():
+    render_search_page()
+
+
+if __name__ == "__main__":
+    main()

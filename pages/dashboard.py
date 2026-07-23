@@ -7,8 +7,10 @@ from core.scoring import calculate_score
 
 
 def render_dashboard():
+    st.markdown("<div class='section-shell'>", unsafe_allow_html=True)
     st.title("🚤 Dashboard")
     st.caption("Monitor your shortlist and keep the best cabin cruisers in focus.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     stats = get_dashboard_stats()
     col1, col2, col3, col4 = st.columns(4)
@@ -30,3 +32,11 @@ def render_dashboard():
 
     for boat in boats[:6]:
         render_boat_card(boat)
+
+
+def main():
+    render_dashboard()
+
+
+if __name__ == "__main__":
+    main()

@@ -6,8 +6,10 @@ from core.models import Boat
 
 
 def render_analytics_page():
+    st.markdown("<div class='section-shell'>", unsafe_allow_html=True)
     st.title("📈 Analytics")
     st.caption("Understand your current inventory at a glance.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     stats = get_dashboard_stats()
     col1, col2, col3, col4 = st.columns(4)
@@ -29,3 +31,11 @@ def render_analytics_page():
     st.subheader("Top ranked boats")
     for boat in ranked[:5]:
         st.write(f"- {boat.name} — score {boat.score} — ${boat.price:,.0f}")
+
+
+def main():
+    render_analytics_page()
+
+
+if __name__ == "__main__":
+    main()
