@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from core.models import Boat
+from core.models import Boat, SearchCriteria
 from core.scoring import calculate_score
 from providers import (
     AutoTraderProvider,
@@ -29,7 +29,7 @@ class SearchManager:
 
     def hunt(
         self,
-        criteria: dict[str, Any] | None = None,
+        profile: SearchCriteria | None = None,
         status_callback: Callable[[str, int], None] | None = None,
     ) -> list[Boat]:
         """Run each provider, merge results, remove duplicates, and score boats."""
@@ -38,7 +38,7 @@ class SearchManager:
 
         for provider in self.providers:
             try:
-                boats = provider.search(criteria)
+                boats = provider.search(profile)
             except Exception:
                 boats = []
 

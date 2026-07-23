@@ -1,6 +1,7 @@
 import streamlit as st
 
 from components.ui import render_boat_card
+from core.database import get_search_profiles
 from services.search_manager import SearchManager
 
 
@@ -15,8 +16,24 @@ def render_hunt_page():
     if "hunt_status" not in st.session_state:
         st.session_state.hunt_status = []
 
+    profiles = get_search_profiles()
+
     col1, col2 = st.columns([2, 1])
     with col1:
+        if profiles:
+            selected_profile_name = st.selectbox(
+                "Saved profile",
+                options=[profile.name for profile in profiles],
+                index=0,
+            )
+            selected_profile = next(
+                (profile for profile in profiles if profile.name == selected_profile_name),
+                None,
+            )
+        else:
+            selected_profile = None
+            st.info("Create a search profile first to make the hunt dynamic.")
+
         if st.button("🚤 HUNT", use_container_width=True):
             st.session_state.hunt_status = []
             manager = SearchManager()
@@ -31,7 +48,7 @@ def render_hunt_page():
                 progress_text.text(f"Running {provider.name}...")
                 progress_bar.progress(index / total)
 
-            results = manager.hunt({}, status_callback=update_status)
+            results = manager.hunt(selected_profile, status_callback=update_status)
             st.session_state.hunt_results = results
             progress_text.text("Search complete")
             progress_bar.progress(1.0)

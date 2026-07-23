@@ -81,6 +81,7 @@ st.sidebar.caption("Premium used cabin cruiser intelligence")
 pages = [
     st.Page("pages/dashboard.py", title="Dashboard", icon="🚤"),
     st.Page("pages/search.py", title="Inventory", icon="🧭"),
+    st.Page("pages/search_profiles.py", title="Search Profiles", icon="📝"),
     st.Page("pages/hunt.py", title="Hunt", icon="🔎"),
     st.Page("pages/analytics.py", title="Analytics", icon="📈"),
     st.Page("pages/settings.py", title="Settings", icon="⚙️"),

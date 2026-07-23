@@ -1,6 +1,8 @@
 import sqlite3
 from pathlib import Path
 
+from core.models import Boat, SearchCriteria
+
 DATABASE = "data/boats.db"
 
 
@@ -25,6 +27,24 @@ def initialize():
             trailer INTEGER,
             score INTEGER,
             notes TEXT
+        )
+        """
+    )
+
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS search_profiles(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            budget_min INTEGER,
+            budget_max INTEGER,
+            max_distance_km INTEGER,
+            length_min REAL,
+            length_max REAL,
+            brands TEXT,
+            engine_preferences TEXT,
+            freshwater_only INTEGER,
+            trailer_required INTEGER
         )
         """
     )
@@ -124,6 +144,101 @@ def get_boats():
 def delete_boat(boat_id):
     conn = connect()
     conn.execute("DELETE FROM boats WHERE id=?", (boat_id,))
+    conn.commit()
+    conn.close()
+
+
+def add_search_profile(profile: SearchCriteria):
+    conn = connect()
+    cursor = conn.execute(
+        """
+        INSERT INTO search_profiles(
+            name,
+            budget_min,
+            budget_max,
+            max_distance_km,
+            length_min,
+            length_max,
+            brands,
+            engine_preferences,
+            freshwater_only,
+            trailer_required
+        ) VALUES(?,?,?,?,?,?,?,?,?,?)
+        """,
+        profile.to_db_tuple(),
+    )
+    conn.commit()
+    profile_id = cursor.lastrowid
+    conn.close()
+    return profile_id
+
+
+def update_search_profile(profile_id, **fields):
+    if not fields:
+        return None
+
+    assignments = ", ".join(f"{field}= ?" for field in fields)
+    values = list(fields.values()) + [profile_id]
+
+    conn = connect()
+    conn.execute(f"UPDATE search_profiles SET {assignments} WHERE id=?", values)
+    conn.commit()
+    conn.close()
+    return profile_id
+
+
+def get_search_profile(profile_id):
+    conn = connect()
+    row = conn.execute(
+        """
+        SELECT
+            id,
+            name,
+            budget_min,
+            budget_max,
+            max_distance_km,
+            length_min,
+            length_max,
+            brands,
+            engine_preferences,
+            freshwater_only,
+            trailer_required
+        FROM search_profiles
+        WHERE id=?
+        """,
+        (profile_id,),
+    ).fetchone()
+    conn.close()
+    return SearchCriteria.from_row(row)
+
+
+def get_search_profiles():
+    conn = connect()
+    rows = conn.execute(
+        """
+        SELECT
+            id,
+            name,
+            budget_min,
+            budget_max,
+            max_distance_km,
+            length_min,
+            length_max,
+            brands,
+            engine_preferences,
+            freshwater_only,
+            trailer_required
+        FROM search_profiles
+        ORDER BY name ASC
+        """
+    ).fetchall()
+    conn.close()
+    return [SearchCriteria.from_row(row) for row in rows]
+
+
+def delete_search_profile(profile_id):
+    conn = connect()
+    conn.execute("DELETE FROM search_profiles WHERE id=?", (profile_id,))
     conn.commit()
     conn.close()
 
