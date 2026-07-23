@@ -4,7 +4,6 @@ from components.ui import render_boat_card
 from core.database import get_search_profiles
 from services.search_manager import SearchManager
 
-
 def render_hunt_page():
     st.markdown("<div class='section-shell'>", unsafe_allow_html=True)
     st.title("🔎 Hunt")

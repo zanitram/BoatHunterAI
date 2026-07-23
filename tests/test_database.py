@@ -66,8 +66,10 @@ def test_search_profile_crud(tmp_path):
 
     stored = dbmodule.get_search_profile(profile_id)
     assert stored is not None
-    assert stored[1] == "Weekend cruiser"
-    assert stored[2] == 8000
+    assert stored.name == "Weekend cruiser"
+    assert stored.budget_min == 8000
+    assert stored.budget_max == 15000
+    assert stored.max_distance_km == 250
 
     dbmodule.update_search_profile(
         profile_id,
@@ -76,8 +78,8 @@ def test_search_profile_crud(tmp_path):
     )
 
     updated = dbmodule.get_search_profile(profile_id)
-    assert updated[4] == 18000
-    assert updated[9] == 0
+    assert updated.budget_max == 18000
+    assert updated.freshwater_only is False
 
     dbmodule.delete_search_profile(profile_id)
     assert dbmodule.get_search_profile(profile_id) is None
