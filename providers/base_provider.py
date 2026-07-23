@@ -7,9 +7,11 @@ from core.models import Boat
 
 
 class Provider(ABC):
+    """Shared interface for all boat providers."""
+
     name: str = "Provider"
 
     @abstractmethod
     def search(self, criteria: dict[str, Any] | None = None) -> list[Boat]:
-        """Return a list of Boat objects for the given criteria."""
+        """Return a list of Boat objects for the supplied search criteria."""
         raise NotImplementedError

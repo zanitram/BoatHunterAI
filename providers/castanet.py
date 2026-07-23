@@ -6,10 +6,10 @@ from core.models import Boat
 from .base_provider import Provider
 
 
-class BoatsComProvider(Provider):
-    """Provider placeholder for Boats.com results."""
+class CastanetProvider(Provider):
+    """Provider placeholder for Castanet results."""
 
-    name = "Boats.com"
+    name = "Castanet"
 
     def search(self, criteria: dict[str, Any] | None = None) -> list[Boat]:
         return []

@@ -7,6 +7,8 @@ from .base_provider import Provider
 
 
 class UsedCaProvider(Provider):
+    """Provider placeholder for Used.ca results."""
+
     name = "Used.ca"
 
     def search(self, criteria: dict[str, Any] | None = None) -> list[Boat]:

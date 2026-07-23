@@ -3,7 +3,6 @@ import streamlit as st
 from components.ui import render_boat_card, render_metric_card
 from core.database import get_boats, get_dashboard_stats
 from core.models import Boat
-from core.scoring import calculate_score
 
 
 def render_dashboard():
