@@ -1,12 +1,14 @@
 # Version
+# BoatHunterAI Version
 
-Current Version:
-v0.4.0
+Current Version: **v0.4.3**
 
-Project Status:
-Active Development
+Status: Stable Development Baseline
 
-Next Milestone:
-v0.5.0
+Release Date: 2026-07-23
 
-First Search Provider
+Highlights:
+- Search Profiles complete
+- Hunt page working
+- Duplicate project removed
+- Regression tests passing (5/5)
