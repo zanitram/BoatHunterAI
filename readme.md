@@ -1,19 +1,46 @@
 # Boat Hunter AI
 
+## Overview
 Boat Hunter AI is a Streamlit-based workspace for tracking cabin cruiser opportunities, managing a local inventory, and running a provider-driven hunt workflow.
 
-## Current architecture
-- app.py hosts the Streamlit entry point and multipage navigation.
-- core/ contains the database, models, and scoring logic.
-- providers/ contains provider interfaces and provider placeholders.
-- services/ contains orchestration logic such as the SearchManager.
-- pages/ contains dashboard, inventory, search-profile, hunt, analytics, and settings views.
-- tests/ contains regression tests for the core model and hunt flow.
+The application currently focuses on a polished local experience with SQLite-backed boat inventory management, dashboard metrics, and a modular search framework that can evolve into live provider integrations.
 
-## Milestone 4 highlights
-- Search Profiles provide reusable budget, distance, length, brand, engine, freshwater, and trailer preferences.
-- Profiles are stored in SQLite so they can be created, edited, deleted, and reused across hunts.
-- The Hunt page lets users select a saved profile before launching a search.
+## Installation
+1. Create and activate a virtual environment if desired.
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Ensure Python 3.10+ is available.
+
+## Running the app
+Run the application with:
+
+```bash
+streamlit run app.py
+```
+
+## Folder structure
+- app.py — Streamlit entry point and multipage navigation
+- core/ — database, models, and scoring logic
+- pages/ — dashboard, inventory, search profile, hunt, analytics, and settings views
+- providers/ — provider interfaces and placeholders
+- services/ — hunt orchestration and search management
+- tests/ — regression tests
+- data/ — SQLite database output
+
+## Screenshots
+Screenshots will be added as the interface evolves. The current UI includes:
+- Dashboard overview
+- Inventory management
+- Search profile management
+- Hunt workflow
+
+## Roadmap
+See [ROADMAP.md](ROADMAP.md) for current milestones and planned work.
+
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## Development notes
 - The inventory and CRUD flow remain the primary data-management path.
