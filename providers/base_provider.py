@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any
 
-from core.models import Boat, SearchCriteria
+from core.models import Boat
+from core.search_request import SearchRequest
 
 
 class Provider(ABC):
@@ -12,6 +12,6 @@ class Provider(ABC):
     name: str = "Provider"
 
     @abstractmethod
-    def search(self, criteria: SearchCriteria | None = None) -> list[Boat]:
+    def search(self, request: SearchRequest | None = None) -> list[Boat]:
         """Return a list of Boat objects for the supplied search criteria."""
         raise NotImplementedError

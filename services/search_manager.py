@@ -4,6 +4,7 @@ from typing import Any, Callable
 
 from core.models import Boat, SearchCriteria
 from core.scoring import calculate_score
+from core.search_request import SearchRequest
 from providers import (
     AutoTraderProvider,
     BoatsComProvider,
@@ -33,12 +34,13 @@ class SearchManager:
         status_callback: Callable[[str, int], None] | None = None,
     ) -> list[Boat]:
         """Run each provider, merge results, remove duplicates, and score boats."""
+        request = SearchRequest.from_profile(profile)
         combined_results: list[Boat] = []
         provider_results: list[tuple[str, int]] = []
 
         for provider in self.providers:
             try:
-                boats = provider.search(profile)
+                boats = provider.search(request)
             except Exception:
                 boats = []
 

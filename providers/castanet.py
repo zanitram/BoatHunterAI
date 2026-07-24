@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from typing import Any
-
-from core.models import Boat, SearchCriteria
+from core.models import Boat
+from core.search_request import SearchRequest
 from .base_provider import Provider
 
 
@@ -11,5 +10,5 @@ class CastanetProvider(Provider):
 
     name = "Castanet"
 
-    def search(self, criteria: SearchCriteria | None = None) -> list[Boat]:
+    def search(self, request: SearchRequest | None = None) -> list[Boat]:
         return []
